@@ -5,7 +5,7 @@ st.set_page_config(
     page_icon="🍽️"
 )
 
-st.title("今日何食べる？｜かんたん献立決定アプリ")
+st.title("献立決定")
 
 import streamlit as st
 
