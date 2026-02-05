@@ -5,11 +5,11 @@ st.set_page_config(
     page_icon="🍽️"
 )
 
-st.title("献立決定")
+st.title("献立決定🍽️")
 
 import streamlit as st
 
-st.title("何食べる？🍽️")
+
 
 # セッションに保存する箱（最初だけ作る）
 if "menu" not in st.session_state:
