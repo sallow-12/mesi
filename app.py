@@ -1,4 +1,6 @@
 import streamlit as st
+import json
+import os
 
 st.set_page_config(
     page_title="今日何食べる？｜献立メーカー",
@@ -7,17 +9,26 @@ st.set_page_config(
 
 st.title("献立決定🍽️")
 
-import streamlit as st
+DATA_FILE = "data.json"
 
+def load_data():
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    else:
+        return {
+            "ごはん": [
+                {"name": "炒飯", "recipe": "ご飯を炒める"},
+            ]
+        }
 
+def save_data(data):
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
 
 # セッションに保存する箱（最初だけ作る）
 if "menu" not in st.session_state:
-    st.session_state.menu = {
-        "ごはん": [
-            {"name": "炒飯", "recipe": "ご飯を炒める"},
-        ]
-    }
+    st.session_state.menu = load_data()
 
 # --- 追加フォーム ---
 st.subheader("メニューを追加")
@@ -35,7 +46,10 @@ if st.button("追加する"):
             "name": new_name,
             "recipe": new_recipe
         })
-        st.success("追加しました！")
+
+        save_data(st.session_state.menu)  # ← ここで保存！
+
+        st.success("保存しました！")
 
 # --- 選択画面 ---
 st.subheader("メニューを選ぶ")
@@ -50,4 +64,5 @@ if st.button("レシピを見る"):
         if item["name"] == name:
             st.write("📖 レシピ")
             st.info(item["recipe"])
+
 
